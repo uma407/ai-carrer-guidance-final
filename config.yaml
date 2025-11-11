@@ -1,0 +1,12 @@
+credentials:
+  usernames:
+    admin:
+      name: Admin User
+      password: $2b$12$8.3AZnvpWTLSww5FyGBJ6.uAxDZBw4oEGjq0RxE8ZGiPZ5.lgEwVi  # admin
+    user:
+      name: Test User
+      password: $2b$12$RufuCxgb.OZJ9k4WGf3wEuqXHjy3.NYD1yc4jWV4eqZ1G8zKQJx1m  # test
+cookie:
+  expiry_days: 30
+  key: career_guidance_signature_key
+  name: career_guidance_cookie

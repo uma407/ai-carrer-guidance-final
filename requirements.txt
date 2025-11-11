@@ -1,0 +1,17 @@
+
+streamlit>=1.28.0
+openai>=1.7.1,<2.0.0
+python-dotenv==1.0.0
+langchain>=0.1.0,<0.2.0
+pydantic>=2.7.4
+pinecone>=2.2.1
+numpy>=1.26.2,<2.0.0
+setuptools>=68.0.0
+plotly>=5.18.0
+pandas>=2.1.2
+streamlit-option-menu>=0.3.6
+streamlit-lottie>=0.0.5
+requests>=2.31.0
+streamlit-authenticator==0.2.3
+bcrypt>=4.0.1
+PyYAML>=6.0.1

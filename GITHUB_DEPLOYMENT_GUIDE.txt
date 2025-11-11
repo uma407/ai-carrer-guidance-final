@@ -1,0 +1,305 @@
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                ║
+║               📤 GITHUB & DEPLOYMENT SETUP GUIDE                              ║
+║                                                                                ║
+║                 Push Code to GitHub & Deploy to Streamlit Cloud               ║
+║                                                                                ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════════════════
+STEP 1: CREATE GITHUB REPOSITORY
+═══════════════════════════════════════════════════════════════════════════════════
+
+1. Go to https://github.com/new
+
+2. Fill in repository details:
+   Repository name:    ai-career-guidance
+   Description:        Multi-agent AI system for career guidance using CrewAI
+   Visibility:         Public (recommended for deployment)
+   Initialize with:    Leave unchecked (we already have code)
+
+3. Click "Create repository"
+
+4. You'll see instructions. Copy the HTTPS URL from the screen.
+   Format: https://github.com/YOUR_USERNAME/ai-career-guidance.git
+
+═══════════════════════════════════════════════════════════════════════════════════
+STEP 2: PUSH CODE TO GITHUB (From Your Computer)
+═══════════════════════════════════════════════════════════════════════════════════
+
+Open PowerShell and run:
+
+```powershell
+cd "c:\Users\acer\Ai carrer guidance"
+
+# Replace YOUR_USERNAME and YOUR_REPO_URL with actual values
+git remote add origin https://github.com/YOUR_USERNAME/ai-career-guidance.git
+
+# Rename branch to main (GitHub's default)
+git branch -M main
+
+# Push code to GitHub
+git push -u origin main
+```
+
+Expected output:
+  Enumerating objects: 68, done.
+  Counting objects: 100% (68/68), done.
+  ...
+  To https://github.com/YOUR_USERNAME/ai-career-guidance.git
+   * [new branch]      main -> main
+  Branch 'main' set up to track remote branch 'main' from 'origin'.
+
+✅ Your code is now on GitHub!
+
+═══════════════════════════════════════════════════════════════════════════════════
+STEP 3: VERIFY ON GITHUB
+═══════════════════════════════════════════════════════════════════════════════════
+
+1. Go to https://github.com/YOUR_USERNAME/ai-career-guidance
+
+2. You should see:
+   ✓ README.md with full project description
+   ✓ All Python files
+   ✓ pages/ directory with 7 page files
+   ✓ requirements.txt
+   ✓ .gitignore
+
+3. Click "Commits" (should show "Initial commit: AI Career Guidance System")
+
+═══════════════════════════════════════════════════════════════════════════════════
+STEP 4: DEPLOY TO STREAMLIT CLOUD (Recommended)
+═══════════════════════════════════════════════════════════════════════════════════
+
+A. SET UP STREAMLIT CLOUD
+
+1. Go to https://share.streamlit.io
+
+2. Click "Sign up with GitHub" or "Sign in"
+   (You must have a GitHub account - same as above)
+
+3. Authorize Streamlit to access your GitHub repositories
+
+4. Click "New app"
+
+B. CONFIGURE YOUR APP
+
+1. Select repository:  YOUR_USERNAME/ai-career-guidance
+
+2. Select branch:      main
+
+3. Main file path:     app_new.py
+
+4. URL slug (optional): ai-career-guidance
+   (This will be part of your live URL)
+
+5. Click "Deploy!"
+
+   ⏳ Wait 2-3 minutes for deployment
+   ✅ You'll see "Your app is running!"
+
+C. SET UP SECRETS (API KEYS)
+
+1. After deployment, click the settings icon (gear) in top right
+
+2. Go to "Secrets" or "Secrets management"
+
+3. Add your API keys in the secrets panel:
+
+   OPENAI_API_KEY=sk-your-actual-key-here
+   HUGGINGFACE_API_KEY=hf_your-token-here
+
+4. Click "Save"
+
+5. App will automatically redeploy with secrets loaded
+
+D. ACCESS YOUR LIVE APP
+
+Your app will be live at:
+  https://YOUR_USERNAME-ai-career-guidance.streamlit.app
+
+Share this URL with anyone to show your project!
+
+═══════════════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING DEPLOYMENT
+═══════════════════════════════════════════════════════════════════════════════════
+
+Issue: App deploys but shows "ModuleNotFoundError"
+Solution:
+  - Verify requirements.txt has all dependencies
+  - Check that .gitignore excludes venv/
+  - Streamlit Cloud will auto-install from requirements.txt
+
+Issue: App runs locally but not on Streamlit Cloud
+Solution:
+  - Make sure .env file is in .gitignore (secrets won't work if .env is committed)
+  - Use Streamlit Cloud secrets instead (Settings → Secrets)
+  - Check if you're using Windows-specific paths (use Path() from pathlib)
+
+Issue: API keys not working on Streamlit Cloud
+Solution:
+  - Don't commit .env file (it's in .gitignore)
+  - Add keys through Streamlit Cloud Settings → Secrets
+  - Wait 30 seconds after adding secrets for app to reload
+  - Verify keys are formatted correctly
+
+Issue: Pages showing blank or 404
+Solution:
+  - Verify main file path is "app_new.py"
+  - Check that pages/ folder exists in GitHub repo
+  - Ensure all imports are relative (use pathlib for paths)
+
+═══════════════════════════════════════════════════════════════════════════════════
+ALTERNATIVE DEPLOYMENTS
+═══════════════════════════════════════════════════════════════════════════════════
+
+Option 1: HEROKU (Free tier limited)
+────────────────────────────────────────────────────────────────────────────────
+
+1. Create Procfile in project root:
+   web: streamlit run app_new.py --server.port=$PORT
+
+2. Create runtime.txt:
+   python-3.11.0
+
+3. Deploy:
+   heroku login
+   heroku create your-app-name
+   git push heroku main
+
+Option 2: AWS BEANSTALK
+────────────────────────────────────────────────────────────────────────────────
+
+1. Install AWS CLI and configure credentials
+
+2. Deploy:
+   eb init -p python-3.11 ai-career-guidance
+   eb create ai-career-guidance-env
+   eb deploy
+
+Option 3: RENDER.COM (Similar to Streamlit Cloud)
+────────────────────────────────────────────────────────────────────────────────
+
+1. Go to https://render.com
+
+2. Connect GitHub repository
+
+3. Set build command: pip install -r requirements.txt
+
+4. Set start command: streamlit run app_new.py --server.port=10000
+
+5. Deploy!
+
+═══════════════════════════════════════════════════════════════════════════════════
+FINAL CHECKS BEFORE DEPLOYING
+═══════════════════════════════════════════════════════════════════════════════════
+
+Before you deploy, verify on your local machine:
+
+✓ Test: streamlit run app_new.py
+  → App should load at http://localhost:8501
+  
+✓ Test: All 7 pages load correctly (Skills, Careers, etc.)
+  → No 404 errors or redirects
+
+✓ Test: Features work
+  → Try skill assessment
+  → Try career search
+  → Try saving resources
+
+✓ Check: requirements.txt has all dependencies
+  → Run: pip freeze > requirements.txt
+
+✓ Check: .env file NOT committed
+  → .env should be in .gitignore
+  → git status should not show .env
+
+✓ Check: README.md is clear and complete
+  → Has installation instructions
+  → Has API key setup info
+  → Has feature descriptions
+
+═══════════════════════════════════════════════════════════════════════════════════
+LIVE URL SHARING
+═══════════════════════════════════════════════════════════════════════════════════
+
+Once deployed to Streamlit Cloud:
+
+1. Your live URL:
+   https://YOUR_USERNAME-ai-career-guidance.streamlit.app
+
+2. Share with:
+   - Instructors/professors
+   - Colleagues
+   - In your portfolio
+   - On social media/LinkedIn
+
+3. Example for instructor:
+   "My AI Career Guidance System is live here:
+    https://YOUR_USERNAME-ai-career-guidance.streamlit.app
+    
+    GitHub repo: https://github.com/YOUR_USERNAME/ai-career-guidance
+    
+    Features:
+    - Multi-agent AI system
+    - 7-page Streamlit app
+    - Semantic search with vector DB
+    - Full source code in GitHub"
+
+═══════════════════════════════════════════════════════════════════════════════════
+MONITORING & MAINTENANCE
+═══════════════════════════════════════════════════════════════════════════════════
+
+After deployment:
+
+Daily Checks:
+  - Visit your live URL to ensure app is running
+  - Check Streamlit Cloud dashboard for errors
+
+Updates:
+  - Make changes locally
+  - Test with: streamlit run app_new.py
+  - Commit: git commit -m "Feature: description"
+  - Push: git push origin main
+  - Streamlit Cloud auto-redeploys (2-3 minutes)
+
+API Costs (if using OpenAI):
+  - Monitor OpenAI usage at platform.openai.com/account/usage
+  - Set API limits to prevent unexpected charges
+  - Consider using text-davinci-003 (cheaper) if needed
+
+═══════════════════════════════════════════════════════════════════════════════════
+QUICK REFERENCE
+═══════════════════════════════════════════════════════════════════════════════════
+
+Local Development:
+  streamlit run app_new.py
+
+Push to GitHub:
+  git add .
+  git commit -m "Describe changes"
+  git push origin main
+
+Live URL (after Streamlit deployment):
+  https://YOUR_USERNAME-ai-career-guidance.streamlit.app
+
+GitHub Repository:
+  https://github.com/YOUR_USERNAME/ai-career-guidance
+
+═══════════════════════════════════════════════════════════════════════════════════
+NEXT STEPS
+═══════════════════════════════════════════════════════════════════════════════════
+
+1. ✓ Create GitHub repository (Step 1)
+2. ✓ Push code to GitHub (Step 2)
+3. ✓ Deploy to Streamlit Cloud (Step 4)
+4. Share your live URL with instructors/portfolio
+5. Monitor and update as needed
+
+═══════════════════════════════════════════════════════════════════════════════════
+
+Ready to go live? Follow the steps above!
+
+Good luck with your deployment! 🚀
+
+═══════════════════════════════════════════════════════════════════════════════════
